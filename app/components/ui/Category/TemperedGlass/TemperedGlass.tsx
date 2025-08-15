@@ -31,7 +31,7 @@ interface SL {
 interface Props {
   products: Product[];
 }
-const BackCovers: React.FC<Props> = ({ products }) => {
+const TemperedGlass: React.FC<Props> = ({ products }) => {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("latest");
   const [aiResponse, setAIResponse] = useState<string>("");
@@ -56,7 +56,7 @@ const BackCovers: React.FC<Props> = ({ products }) => {
   async function loadMore() {
     const nextPage = page + 1;
     const res = await fetch(
-      `/api/products?page=${nextPage}&limit=10&category=Backcovers`
+      `/api/products?page=${nextPage}&limit=10&category=Tempered Glass`
     );
     const data = await res.json();
     setPaginatedProducts((prev) => [...prev, ...data["products"]]);
@@ -145,12 +145,110 @@ const BackCovers: React.FC<Props> = ({ products }) => {
         paginatedProducts={paginatedProducts}
         setIsInView={setIsInView}
       />
+      {/* {category === "backcovers" && (
+                <LatestProduct
+                    length={length}
+                    paginatedProducts={paginatedProducts}
+                    setIsInView={setIsInView}
+                />
+            )} */}
+
+      {/* <BackCovers
+                paginatedProducts={paginatedProducts}
+                setIsInView={setIsInView}
+                length={length}
+            /> */}
+      {/* <ProductPage /> */}
+      {/* <div
+                className={`${
+                    turnAI ? "Slide-From-Top" : "Slide-Back"
+                } w-full max-w-md fixed -top-5 left-1/2 -translate-x-1/2 z-[9999] p-4 `}
+            >
+                <div className="bg-gradient-animated-version text-white  px-6 py-4 rounded-b-2xl shadow-lg text-center">
+                    <h2 className="text-xl font-bold">
+                        AI-Based Search Enabled
+                    </h2>
+                    <Button variant="outline" onClick={() => setTurnAI(false)}>
+                        Turn Off
+                    </Button>
+                </div>
+            </div>
+            {turnAI && <AISearchInfo />}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 bg-white rounded-xl shadow-sm">
+                <Input
+                    placeholder="Search product, models..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="relative w-full"
+                />
+                <Select
+                    value={category}
+                    onValueChange={setCategory}
+                    className="w-full"
+                >
+                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="Backcovers">Backcovers</SelectItem>
+                    <SelectItem value="Tempered Glass">
+                        Tempered Glass
+                    </SelectItem>
+                    <SelectItem value="Chargers">Chargers</SelectItem>
+                    <SelectItem value="Mobiles">Mobiles</SelectItem>
+                </Select>
+
+                <Select
+                    value={sortBy}
+                    onValueChange={setSortBy}
+                    className="w-full"
+                >
+                    <SelectItem value="latest">Newest Arrivals</SelectItem>
+                    <SelectItem value="priceLow">Price: Low to High</SelectItem>
+                    <SelectItem value="priceHigh">
+                        Price: High to Low
+                    </SelectItem>
+                    <SelectItem value="stockHigh">
+                        Stock: High to Low
+                    </SelectItem>
+                </Select>
+
+                <div className="flex gap-2 w-full">
+                    <Button
+                        variant="gradient"
+                        className="flex-1"
+                        onClick={() =>
+                            turnAI ? handleSearch() : setTurnAI((prev) => !prev)
+                        }
+                    >
+                        {turnAI ? "Search" : "Enable AI"}
+                    </Button>
+                    <Button
+                        variant="default"
+                        className="flex-1"
+                        onClick={() => router.push("/addproduct")}
+                    >
+                        Add Product
+                    </Button>
+                </div>
+            </div> */}
+      {/* 
+            <CustomBot
+                products={products}
+                setAIResponse={setAIResponse}
+                turn={turnAI}
+                setLoading={setLoading}
+                prompt={prompt}
+                customPrompt={null}
+            />
+            <div className="pl-5 font-bold bg-gradient-animated w-40 text-white rounded-2xl p-1">
+                {category.length === 0 ? "ALL CATEGORIES" : category}
+            </div> */}
+
       <FloatingObject />
     </div>
   );
 };
 
-export default BackCovers;
+export default TemperedGlass;
 
 const AISearchInfo = () => {
   return (

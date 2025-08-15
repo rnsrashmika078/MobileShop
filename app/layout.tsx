@@ -10,6 +10,7 @@ import "./globals.css";
 import ClientProvider from "@/redux/ClientProvider";
 import Notification from "./components/ui/Notification";
 import NavBar from "./components/ui/Nav/NavBar";
+import Sidebar from "./components/ui/Sidebar/Sidebar";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({
         <ClientProvider>
           <Notification />
           <NavBar />
+          {/* <Sidebar /> */}
           {children}
         </ClientProvider>
       </body>

@@ -32,7 +32,11 @@ const ShowProduct = ({ paginatedProducts, setIsInView }: Props) => {
       const getLength = async () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/categorylength?category=${
-            header === "Home" ? "" : header
+            header === "Home"
+              ? ""
+              : header.toLowerCase().startsWith("tempered")
+              ? "Tempered Glass"
+              : header
           }`
         );
         if (res.ok) {
@@ -61,7 +65,11 @@ const ShowProduct = ({ paginatedProducts, setIsInView }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center mt-16 text-center">
       <h1 className="text-4xl font-extrabold text-gray-800 tracking-wide mb-2">
-        {currentPath.startsWith("/home") ? "LATEST PRODUCTS" : header}
+        {currentPath.startsWith("/home")
+          ? "LATEST PRODUCTS"
+          : header.toLowerCase().startsWith("temp")
+          ? "Tempered Glass"
+          : header}
       </h1>
       <p className="text-gray-500 text-lg max-w-xl">
         {currentPath.startsWith("/home")

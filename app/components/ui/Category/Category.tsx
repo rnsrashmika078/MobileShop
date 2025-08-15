@@ -52,7 +52,7 @@ const Category = () => {
             className="relative bg-white shadow-md rounded-lg overflow-hidden w-50 h-50 text-center"
             onClick={() => {
               dispatch(setCategory(item.category));
-              router.push("/backcovers");
+              router.push(item.category.split(" ").join("").toLowerCase());
             }}
           >
             <Image
