@@ -10,7 +10,6 @@ import Image from "next/image";
 import { setCategory } from "@/redux/Products";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 const NavBar = () => {
   const [toggle, setToggle] = useState<boolean>(false);
@@ -50,13 +49,13 @@ const NavBar = () => {
       }
     }
   }, []);
+  const router = useRouter();
 
   if (typeof window !== "undefined" && path === "/") return;
 
-  const router = useRouter();
   return (
     // 4rem = 64px = 16 tailwind points
-    <div className="sticky top-0 z-[9999] bg-white">
+    <div className="sticky top-0 z-[9998] bg-white">
       <div className=" hidden md:flex gap-5 justify-between p-2 bg-gray-200 text-gray-500 text-xs px-10 ">
         <p className="">Latest Mobile Accessories</p>
         <div className="flex gap-5">
@@ -130,7 +129,7 @@ const NavBar = () => {
         {mainNavItems.map((item) => (
           <div
             key={item.index}
-            className=" text-white font-extralight hover:cursor-pointer select-none hover:text-gray-300 transition-all duration-200"
+            className="text-white font-extralight hover:cursor-pointer select-none hover:text-gray-300 transition-all duration-200"
             onClick={() =>
               item.item !== "ALL ACCESSORIES" &&
               router.push(`/${item.item.toLowerCase()}`)
@@ -141,7 +140,7 @@ const NavBar = () => {
         ))}
         {hover && hover === "ALL ACCESSORIES" && (
           <div
-            className="top-28 absolute md:top-14 z-[9999]"
+            className="top-14 absolute translate-x-6 z-[9999]"
             onMouseLeave={() => setHover(null)}
           >
             <CategoryList />

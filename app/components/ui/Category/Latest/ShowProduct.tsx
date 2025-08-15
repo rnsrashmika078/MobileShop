@@ -1,21 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card } from "../../Card";
-import { Product } from "@/types";
+import { ImgProperty, Product } from "@/types";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useInView } from "framer-motion";
 import Spinner from "../../Spinner";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { DeleteProduct } from "@/app/action/DeleteProduct";
+import { setSimpleNotification } from "@/redux/NotifySlicer";
 interface Props {
   paginatedProducts: Product[];
   setIsInView: React.Dispatch<React.SetStateAction<boolean>>;
+  setPaginatedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
-const ShowProduct = ({ paginatedProducts, setIsInView }: Props) => {
+const ShowProduct = ({
+  paginatedProducts,
+  setIsInView,
+  setPaginatedProducts,
+}: Props) => {
   const router = useRouter();
   const endRef = useRef<HTMLDivElement | null>(null);
   const [length, setLength] = useState<number>(0);
   const [header, setHeader] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
   const isInView = useInView(endRef, {
     // rootMargin: "-10% 0px -10% 0px",
     // once: false,  set to true if you only want to trigger once
@@ -47,6 +56,21 @@ const ShowProduct = ({ paginatedProducts, setIsInView }: Props) => {
       getLength();
     }
   }, [category, header, paginatedProducts]);
+
+  const handleDelete = async (_id: string, productImage: ImgProperty[]) => {
+    setLoading(true);
+
+    try {
+      const data = await DeleteProduct(_id, productImage);
+      if (data) {
+        dispatch(setSimpleNotification({ simpleMessage: data.message }));
+        setLoading(false);
+        setPaginatedProducts((prev) => prev.filter((p) => p._id !== _id));
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const description: Record<string, string> = {
     All: "Check out the newest arrivals in our store – fresh picks just for you!",
@@ -86,10 +110,11 @@ const ShowProduct = ({ paginatedProducts, setIsInView }: Props) => {
         {paginatedProducts && paginatedProducts.length > 0 ? (
           paginatedProducts.map((product, index) => (
             <Card
-              onClickCapture={() => router.push(`/product/${product._id}`)}
+              onClick={() => router.push(`/product/${product._id}`)}
               key={index}
               product={product}
-              // handleDelete={handleDelete}
+              loadingState={loading}
+              handleDelete={handleDelete}
               // handleEdit={handleEdit}
               className="p-4 bg-white space-y-2 shadow-md hover:shadow-lg transition"
             ></Card>
@@ -112,7 +137,9 @@ const ShowProduct = ({ paginatedProducts, setIsInView }: Props) => {
           <Spinner />
         </div>
       ) : (
-        <h1>You have Reached To End!</h1>
+        <h1 className="border p-2 border-gray-200 shadow-sm rounded-sm">
+          You’re all caught up 🎉
+        </h1>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import { AddNewProduct } from "@/app/action/AddNewProduct";
 
 export async function POST(req: Request) {
   await connectDB();
+  
   const token = req.headers
     .get("cookie")
     ?.split("admin_token=")[1]

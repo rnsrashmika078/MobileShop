@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { setEditProduct } from "@/redux/Products";
 import { useRouter } from "next/navigation";
-import { setSimpleNotification } from "@/redux/NotifySlicer";
+import { setSimpleNotification, setToken } from "@/redux/NotifySlicer";
 import Button from "../Button";
 import Input from "../Input";
 import { Select, SelectItem } from "../Select";
@@ -22,7 +22,7 @@ import FloatingObject from "../FloatingObject";
 import Banner from "../Banner/Banner";
 import Category from "../Category/Category";
 import ShowProduct from "../Category/Latest/ShowProduct";
-import Sidebar from "../Sidebar/Sidebar";
+import { DeleteProduct } from "@/app/action/DeleteProduct";
 // import Category from "./Category/Category";
 
 interface SL {
@@ -30,8 +30,9 @@ interface SL {
 }
 interface Props {
   products: Product[];
+  token: string;
 }
-const Dashboard: React.FC<Props> = ({ products }) => {
+const Dashboard: React.FC<Props> = ({ products, token }) => {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("latest");
   const [aiResponse, setAIResponse] = useState<string>("");
@@ -43,6 +44,7 @@ const Dashboard: React.FC<Props> = ({ products }) => {
     useState<Product[]>(products);
   const [page, setPage] = useState(1);
   const [isInView, setIsInView] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   async function loadMore() {
     const nextPage = page + 1;
@@ -51,6 +53,12 @@ const Dashboard: React.FC<Props> = ({ products }) => {
     setPaginatedProducts((prev) => [...prev, ...data["products"]]);
     setPage(nextPage);
   }
+
+  useEffect(() => {
+    if (token) {
+      dispatch(setToken(token));
+    }
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (isInView) {
@@ -70,29 +78,24 @@ const Dashboard: React.FC<Props> = ({ products }) => {
     }
   }, [aiResponse]);
 
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   // handle Delete
-  const handleDelete = async (_id: string, productImage: ImgProperty[]) => {
-    setLoading({ type: "DELETE", loading: true });
+  // const handleDelete = async (_id: string, productImage: ImgProperty[]) => {
+  //   setLoading({ type: "DELETE", loading: true });
 
-    try {
-      const res = await axios.delete(
-        `http://localhost:5000/api/auth/deletePost/${_id}`,
-        {
-          data: productImage.map((image) => image.public_id),
-        }
-      );
-      if (res.status === 200) {
-        dispatch(setSimpleNotification({ simpleMessage: res.data.message }));
-        setLoading({ type: "Delete", loading: false });
-        router.push("/home");
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
+  //   try {
+  //     const data = await DeleteProduct(_id, productImage);
+  //     if (data) {
+  //       dispatch(setSimpleNotification({ simpleMessage: data.message }));
+  //       // router.push("/home");
+  //       setLoading({ type: "Delete", loading: false });
+  //       setPaginatedProducts((prev) => prev.filter((p) => p._id !== _id));
+  //     }
+  //   } catch (error) {
+  //     alert(error);
+  //   }
+  // };
 
   const handleEdit = (product: Product) => {
     dispatch(setEditProduct(product));
@@ -132,6 +135,7 @@ const Dashboard: React.FC<Props> = ({ products }) => {
       <Banner />
       <Category />
       <ShowProduct
+        setPaginatedProducts={setPaginatedProducts}
         paginatedProducts={paginatedProducts}
         setIsInView={setIsInView}
       />

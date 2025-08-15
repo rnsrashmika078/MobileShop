@@ -7,13 +7,12 @@ const Page = async () => {
   const token = (await cookies()).get("admin_token")?.value;
 
   if (!token) {
-    // Server-side redirect to login
     redirect(`${process.env.NEXT_PUBLIC_API_URL}/admin`);
   }
 
   return (
     <div>
-      <AddProduct />
+      <AddProduct/>
     </div>
   );
 };

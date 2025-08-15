@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Params {
   notify: Notify;
   simpleMessage: SimpleMessage | null;
+  token: string | null;
 }
 interface Notify {
   message: string;
@@ -19,12 +20,13 @@ interface SimpleMessage {
 const initialState: Params = {
   notify: { message: "", status: "", message_header: "" },
   simpleMessage: null,
+  token: null,
 };
 
 const nofifySlicer = createSlice({
   name: "NofifySlicer",
   initialState,
-  
+
   reducers: {
     setNotify: (state, action: PayloadAction<Notify>) => {
       state.notify = action.payload;
@@ -32,8 +34,12 @@ const nofifySlicer = createSlice({
     setSimpleNotification: (state, action: PayloadAction<SimpleMessage>) => {
       state.simpleMessage = action.payload;
     },
+    setToken: (state, action: PayloadAction<string | null>) => {
+      state.token = action.payload;
+    },
   },
 });
 
-export const { setNotify, setSimpleNotification } = nofifySlicer.actions;
+export const { setNotify, setSimpleNotification, setToken } =
+  nofifySlicer.actions;
 export default nofifySlicer.reducer;

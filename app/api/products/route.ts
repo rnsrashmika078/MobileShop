@@ -7,7 +7,6 @@ export async function GET(req: Request) {
   const limit = parseInt(searchParams.get("limit") || "10");
   const category = searchParams.get("category") || "";
 
-  console.log("CACA", category);
 
   const result = await getAllProducts(page, limit, category);
 

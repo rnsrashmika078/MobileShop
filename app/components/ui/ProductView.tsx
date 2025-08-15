@@ -120,7 +120,7 @@ const Productview: React.FC<{ product: Product }> = ({ product }) => {
                                     📝 Description:
                                 </h2>
 
-                                <CustomBot
+                                {/* <CustomBot
                                     products={product}
                                     setAIResponse={setAIResponse}
                                     turn={turnAI}
@@ -128,9 +128,9 @@ const Productview: React.FC<{ product: Product }> = ({ product }) => {
                                     customPrompt={`Generate Descripton short with the given product details: ${JSON.stringify(
                                         product
                                     )} currency is sri lankan rupee`}
-                                />
+                                /> */}
 
-                                {loading?.loading ? (
+                                {/* {loading?.loading ? (
                                     <div className="flex justify-center mt-5">
                                         {" "}
                                         <Spinner />
@@ -139,7 +139,7 @@ const Productview: React.FC<{ product: Product }> = ({ product }) => {
                                     <p className="text-gray-700 mt-2">
                                         {aiResponse}
                                     </p>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </div>

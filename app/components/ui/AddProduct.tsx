@@ -9,8 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { ImgProperty } from "@/types";
 import { setSimpleNotification } from "@/redux/NotifySlicer";
-import { AddNewProduct } from "@/app/action/AddNewProduct";
-import { image } from "framer-motion/client";
+
 
 const AddProduct = () => {
   const router = useRouter();
@@ -53,24 +52,15 @@ const AddProduct = () => {
       images: imageProperty.filter((img) => img.secure_url !== ""),
     };
 
-    const formData: FormData = new FormData();
-    formData.append("name", newProduct.name);
-    formData.append("model", newProduct.model);
-    formData.append("color", newProduct.color);
-    formData.append("price", newProduct.price.toString());
-    formData.append("category", newProduct.category);
-    formData.append("stock", newProduct.stock.toString());
-    formData.append("images", JSON.stringify(newProduct.images));
-
     if (type === "Add Product") {
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/addproduct`,
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-            credentials: "include", // ✅ important
+            // headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newProduct),
+            credentials: "include",
           }
         );
         const data = await res.json();
@@ -91,7 +81,7 @@ const AddProduct = () => {
           // router.push("/addproduct");
           dispatch(
             setSimpleNotification({
-              simpleMessage: res.message,
+              simpleMessage: data.message,
             })
           );
           await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -151,7 +141,6 @@ const AddProduct = () => {
   //     }
   // }, [editProduct]);
 
-  console.log(imageProperty);
 
   return (
     <div className="mt-5 w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md space-y-4 border border-gray-200">

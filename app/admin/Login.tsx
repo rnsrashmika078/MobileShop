@@ -66,7 +66,6 @@ const Login = () => {
         <p className="text-center text-xs">
           Login to Add Product, Delete Product and all other mutations
         </p>
-
         <Input
           placeholder="Enter Email"
           {...register("username")}
